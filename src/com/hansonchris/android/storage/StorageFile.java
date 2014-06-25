@@ -24,18 +24,13 @@ public class StorageFile implements StorageInterface
     protected Context context;
     protected static int DEFAULT_BUFFER_SIZE = 8 * 1024;
 
-    public StorageFile(Context context, String filename, String extension)
+    public StorageFile(Context context, String directory, String filename, String extension)
     {
         this.filename = filename;
         this.extension = extension;
         this.context = context;
-        setUpPersistentStorageFile();
-    }
-
-    public StorageFile(Context context, String directory, String filename, String extension)
-    {
-        this(context, filename, extension);
         this.directory = directory;
+        setUpPersistentStorageFile();
     }
 
     synchronized public void setBufferSize(int bytes)

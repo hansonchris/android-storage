@@ -8,13 +8,6 @@ public class StorageMemcacheFile implements StorageInterface
     protected StorageFile file;
     protected Context context;
 
-    public StorageMemcacheFile(Context context, String filename, String extension)
-    {
-        this.context = context;
-        file = getFileStorage(filename, extension);
-        memcache = getMemcacheStorage();
-    }
-
     public StorageMemcacheFile(
         Context context,
         String directory,
@@ -31,15 +24,11 @@ public class StorageMemcacheFile implements StorageInterface
         file.clearAll();
     }
 
-    protected StorageFile getFileStorage(String filename, String extension)
-    {
-        return new StorageFile(context, filename, extension);
-    }
-
     protected StorageFile getFileStorage(
         Context context,
         String directory,
-        String filename,String extension
+        String filename,
+        String extension
     ) {
         return new StorageFile(context, directory, filename, extension);
     }

@@ -2,19 +2,25 @@ package com.hansonchris.android.storage;
 
 import android.content.Context;
 
+import java.util.Map;
+
 public class StorageFactory
 {
+    public static final String PARAM_FILENAME = "param_filename";
+    public static final String PARAM_EXTENSION = "param_extension";
+    public static final String PARAM_DIRECTORY = "param_directory";
+
     static public StorageInterface getStorage(
         Context context,
         StorageFactory.Type type
     ) {
-        return getStorage(context, type, new String[] {});
+        return getStorage(context, type, null);
     }
 
     static public StorageInterface getStorage(
         Context context,
         StorageFactory.Type type,
-        String... params
+        Map<String, String> params
     ) {
         StorageInterface storage = null;
         String directory;
@@ -22,14 +28,10 @@ public class StorageFactory
         String extension;
         switch (type) {
             case File:
-                if (params.length == 2) {
-                    filename = params[0];
-                    extension = params[1];
-                    storage = new StorageFile(context, filename, extension);
-                } else if (params.length >= 3) {
-                    directory = params[0];
-                    filename = params[1];
-                    extension = params[2];
+                if (params != null) {
+                    filename = params.get(PARAM_FILENAME);
+                    extension = params.get(PARAM_EXTENSION);
+                    directory = params.get(PARAM_DIRECTORY);
                     storage = new StorageFile(context, directory, filename, extension);
                 }
                 break;
@@ -37,16 +39,11 @@ public class StorageFactory
                 storage = new StorageMemcache();
                 break;
             case MemcacheFile:
-                if (params.length == 2) {
-                    filename = params[0];
-                    extension = params[1];
-                    storage = new StorageMemcacheFile(context, filename, extension);
-                } else if (params.length >= 3) {
-                    directory = params[0];
-                    filename = params[1];
-                    extension = params[2];
-                    storage =
-                        new StorageMemcacheFile(context, directory, filename, extension);
+                if (params != null) {
+                    filename = params.get(PARAM_FILENAME);
+                    extension = params.get(PARAM_EXTENSION);
+                    directory = params.get(PARAM_DIRECTORY);
+                    storage = new StorageMemcacheFile(context, directory, filename, extension);
                 }
                 break;
         }
