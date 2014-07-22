@@ -23,6 +23,7 @@ public class StorageFile implements StorageInterface
     protected int bufferSize;
     protected Context context;
     protected static int DEFAULT_BUFFER_SIZE = 8 * 1024;
+    protected static final String DELIMITER = "\t";
 
     public StorageFile(Context context, String directory, String filename, String extension)
     {
@@ -220,7 +221,7 @@ public class StorageFile implements StorageInterface
             try {
                 tempValue = reader.readLine();
                 while (tempValue != null) {
-                    String[] parts = tempValue.split(",");
+                    String[] parts = tempValue.split(DELIMITER);
                     if (parts.length != 3) {
                         break;
                     }
@@ -232,7 +233,7 @@ public class StorageFile implements StorageInterface
                     }
                     tempValue = reader.readLine();
                 }
-            } catch (IOException e) {}
+            } catch (IOException e) {e.printStackTrace();}
         }
 
         return value;
@@ -264,7 +265,7 @@ public class StorageFile implements StorageInterface
         File file = getFile();
         try {
             Writer writer = getWriter(file);
-            writer.write(key + "," + String.valueOf(value) + "," +
+            writer.write(key + DELIMITER + String.valueOf(value) + DELIMITER +
                 Calendar.getInstance().getTimeInMillis() + "\n");
             writer.flush();
             writer.close();
