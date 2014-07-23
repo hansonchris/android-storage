@@ -70,6 +70,11 @@ public class StorageFile implements StorageInterface
         }
     }
 
+    synchronized public void clear(String key)
+    {
+        deleteLinesWithKey(key);
+    }
+
     synchronized public Object get(String key)
     {
         return read(key);

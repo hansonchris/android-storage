@@ -6,6 +6,8 @@ public interface StorageInterface
 
     public void clearAll();
 
+    public void clear(String key);
+
     public void put(String key, byte value);
 
     public void put(String key, int value);

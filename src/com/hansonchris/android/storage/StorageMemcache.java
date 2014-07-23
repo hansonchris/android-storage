@@ -32,6 +32,11 @@ public class StorageMemcache implements StorageInterface
         updateLastModified();
     }
 
+    synchronized public void clear(String key)
+    {
+        map.remove(key);
+    }
+
     synchronized public Object get(String key)
     {
         if (map.containsKey(key)) {

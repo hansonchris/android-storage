@@ -24,6 +24,12 @@ public class StorageMemcacheFile implements StorageInterface
         file.clearAll();
     }
 
+    synchronized public void clear(String key)
+    {
+        memcache.clear(key);
+        file.clear(key);
+    }
+
     protected StorageFile getFileStorage(
         Context context,
         String directory,
