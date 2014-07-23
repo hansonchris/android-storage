@@ -10,7 +10,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class StorageFile implements StorageInterface
 {
@@ -239,6 +241,45 @@ public class StorageFile implements StorageInterface
         return value;
     }
 
+    protected void deleteLinesWithKey(String key)
+    {
+        List<String> lines = new ArrayList<String>();
+        BufferedReader reader = getReader();
+        if (reader != null) {
+            String lineValue;
+            try {
+                lineValue = reader.readLine();
+                while (lineValue != null) {
+                    String[] parts = lineValue.split(DELIMITER);
+                    if (parts.length != 3) {
+                        break;
+                    }
+                    String currentKey = parts[0];
+                    if (!key.equals(currentKey)) {
+                        lines.add(lineValue);
+                    }
+                    lineValue = reader.readLine();
+                }
+            } catch (IOException e) {e.printStackTrace();}
+        }
+        File file = getFile();
+        file.delete();
+        file = getFile();
+        try {
+            Writer writer = getWriter(file);
+            for (String line : lines) {
+                writer.write(line + "\n");
+            }
+            writer.flush();
+            writer.close();
+            lastKeyRead = null;
+            lastValueRead = null;
+            lastModified = file.lastModified();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     protected BufferedReader getReader()
     {
         BufferedReader bufferedReader = null;
@@ -262,6 +303,7 @@ public class StorageFile implements StorageInterface
 
     protected boolean write(String key, Object value)
     {
+        deleteLinesWithKey(key);
         File file = getFile();
         try {
             Writer writer = getWriter(file);
