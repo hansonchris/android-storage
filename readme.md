@@ -30,6 +30,7 @@ The interface is similar to the familiar `android.os.Bundle` class, but a  littl
 ```java
 public boolean containsKey(String key);
 public void clearAll();
+public void clear(String key);
 public void put(String key, byte value);
 public void put(String key, int value);
 public void put(String key, long value);
